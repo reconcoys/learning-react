@@ -1,9 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const Square = () => (
+const Square = ({ value }) => (
   <button type="button" className="square">
-    {/* TODO */}
+    { value }
   </button>
 );
+Square.propTypes = {
+  value: PropTypes.number.isRequired,
+};
 
 export default Square;
