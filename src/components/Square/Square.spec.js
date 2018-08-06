@@ -3,9 +3,13 @@ import { shallow } from 'enzyme';
 import Square from './Square';
 
 describe('Square', () => {
-  it('shows value on button', () => {
-    const wrapper = shallow(<Square value={1} />);
+  describe('when button is clicked', () => {
+    it('sets the text value to X', () => {
+      const wrapper = shallow(<Square />);
 
-    expect(wrapper.find('.square').text()).toBe('1');
+      wrapper.find('.square').simulate('click');
+
+      expect(wrapper.find('.square').text()).toBe('X');
+    });
   });
 });

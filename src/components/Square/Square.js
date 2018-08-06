@@ -1,13 +1,24 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const Square = ({ value }) => (
-  <button type="button" className="square">
-    { value }
-  </button>
-);
-Square.propTypes = {
-  value: PropTypes.number.isRequired,
-};
+export default class Square extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: null,
+    };
+  }
 
-export default Square;
+  render() {
+    const { value } = this.state;
+
+    return (
+      <button
+        type="button"
+        className="square"
+        onClick={() => this.setState({ value: 'X' })}
+      >
+        { value }
+      </button>
+    );
+  }
+}
