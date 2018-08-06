@@ -2,8 +2,28 @@ import React from 'react';
 import Square from '../Square/Square';
 
 class Board extends React.Component {
-  static renderSquare(i) {
-    return <Square value={i} />;
+  constructor(props) {
+    super(props);
+    this.state = {
+      squares: Array(9).fill(null),
+    };
+  }
+
+  handleClick(i) {
+    const { squares } = this.state;
+    const updatedSquares = squares.slice();
+    updatedSquares[i] = 'X';
+    this.setState({ squares: updatedSquares });
+  }
+
+  renderSquare(i) {
+    const { squares } = this.state;
+    return (
+      <Square
+        value={squares[i]}
+        onClick={() => this.handleClick(i)}
+      />
+    );
   }
 
   render() {
@@ -15,19 +35,19 @@ class Board extends React.Component {
           {status}
         </div>
         <div className="board-row">
-          {Board.renderSquare(0)}
-          {Board.renderSquare(1)}
-          {Board.renderSquare(2)}
+          {this.renderSquare(0)}
+          {this.renderSquare(1)}
+          {this.renderSquare(2)}
         </div>
         <div className="board-row">
-          {Board.renderSquare(3)}
-          {Board.renderSquare(4)}
-          {Board.renderSquare(5)}
+          {this.renderSquare(3)}
+          {this.renderSquare(4)}
+          {this.renderSquare(5)}
         </div>
         <div className="board-row">
-          {Board.renderSquare(6)}
-          {Board.renderSquare(7)}
-          {Board.renderSquare(8)}
+          {this.renderSquare(6)}
+          {this.renderSquare(7)}
+          {this.renderSquare(8)}
         </div>
       </div>
     );

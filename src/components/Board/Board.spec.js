@@ -4,10 +4,31 @@ import Board from './Board';
 import Square from '../Square/Square';
 
 describe('Board', () => {
-  it('passes square index to all Squares', () => {
+  it('renders Squares', () => {
     const wrapper = shallow(<Board />);
 
-    const passedValues = wrapper.find(Square).map(square => square.prop('value'));
-    expect(passedValues).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8]);
+    expect(wrapper.find(Square)).toHaveLength(9);
+  });
+
+  it('passes value to Squares', () => {
+    const wrapper = shallow(<Board />);
+
+    expect(wrapper.find(Square).first().prop('value')).toBe(null);
+  });
+
+  it('passes onClick to Squares', () => {
+    const wrapper = shallow(<Board />);
+
+    expect(wrapper.find(Square).first().prop('onClick')).not.toBeUndefined();
+  });
+
+  describe('handleClick', () => {
+    it('sets the given index in state.squares to X', () => {
+      const wrapper = shallow(<Board />);
+
+      wrapper.instance().handleClick(8);
+
+      expect(wrapper.state('squares')[8]).toBe('X');
+    });
   });
 });
