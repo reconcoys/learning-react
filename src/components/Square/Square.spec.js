@@ -3,17 +3,18 @@ import { shallow } from 'enzyme';
 import Square from './Square';
 
 describe('Square', () => {
+  let wrapper;
   let props;
 
   beforeEach(() => {
     const mockOnClick = jest.fn();
     props = { onClick: mockOnClick, value: 'X' };
+    wrapper = shallow(<Square {...props} />);
   });
 
   describe('when button is clicked', () => {
     it('calls props.onClick', () => {
       const { onClick } = props;
-      const wrapper = shallow(<Square {...props} />);
 
       wrapper.find('.square').simulate('click');
 
@@ -22,8 +23,6 @@ describe('Square', () => {
   });
 
   it('shows value on button', () => {
-    const wrapper = shallow(<Square {...props} />);
-
     expect(wrapper.find('.square').text()).toBe('X');
   });
 });
