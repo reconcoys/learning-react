@@ -1,7 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import Board from './Board';
+import calculateWinner from './BoardHelper';
 import Square from '../Square/Square';
+
+jest.mock('./BoardHelper');
 
 describe('Board', () => {
   let wrapper;
@@ -10,14 +13,21 @@ describe('Board', () => {
     wrapper = shallow(<Board />);
   });
 
-  it('Shows expected status when next player is X', () => {
+  it('shows expected status when next player is X', () => {
     expect(wrapper.find('.status').text()).toBe('Next player: X');
   });
 
-  it('Shows expected status when next player is O', () => {
+  it('shows expected status when next player is O', () => {
     wrapper.setState({ xIsNext: false });
 
     expect(wrapper.find('.status').text()).toBe('Next player: O');
+  });
+
+  it('shows expected status when calculateWinner returns a player', () => {
+    calculateWinner.mockImplementation(() => 'O');
+    wrapper = shallow(<Board />);
+
+    expect(wrapper.find('.status').text()).toBe('Winner: O');
   });
 
   it('renders Squares', () => {
