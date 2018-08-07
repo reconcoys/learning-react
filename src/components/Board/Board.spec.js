@@ -57,5 +57,14 @@ describe('Board', () => {
 
       expect(wrapper.state('xIsNext')).toBe(false);
     });
+
+    it('does not update square if square already has a value', () => {
+      const squares = [null, null, null, null, null, null, null, null, 'O'];
+      wrapper.setState({ squares });
+
+      wrapper.instance().handleClick(8);
+
+      expect(wrapper.state('squares')[8]).toBe('O');
+    });
   });
 });
