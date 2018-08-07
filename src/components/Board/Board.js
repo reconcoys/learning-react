@@ -10,10 +10,15 @@ class Board extends React.Component {
     };
   }
 
+  getNextPlayer() {
+    const { xIsNext } = this.state;
+    return xIsNext ? 'X' : 'O';
+  }
+
   handleClick(i) {
     const { squares, xIsNext } = this.state;
     const updatedSquares = squares.slice();
-    updatedSquares[i] = xIsNext ? 'X' : 'O';
+    updatedSquares[i] = this.getNextPlayer();
     this.setState({
       squares: updatedSquares,
       xIsNext: !xIsNext,
@@ -31,7 +36,7 @@ class Board extends React.Component {
   }
 
   render() {
-    const status = 'Next player: X';
+    const status = `Next player: ${this.getNextPlayer()}`;
 
     return (
       <div>

@@ -10,6 +10,16 @@ describe('Board', () => {
     wrapper = shallow(<Board />);
   });
 
+  it('Shows expected status when next player is X', () => {
+    expect(wrapper.find('.status').text()).toBe('Next player: X');
+  });
+
+  it('Shows expected status when next player is O', () => {
+    wrapper.setState({ xIsNext: false });
+
+    expect(wrapper.find('.status').text()).toBe('Next player: O');
+  });
+
   it('renders Squares', () => {
     expect(wrapper.find(Square)).toHaveLength(9);
   });
