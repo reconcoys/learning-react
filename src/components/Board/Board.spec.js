@@ -10,7 +10,12 @@ describe('Board', () => {
   let wrapper;
 
   beforeEach(() => {
+    calculateWinner.mockImplementation(() => null);
     wrapper = shallow(<Board />);
+  });
+
+  afterEach(() => {
+    calculateWinner.mockRestore();
   });
 
   it('shows expected status when next player is X', () => {
@@ -75,6 +80,15 @@ describe('Board', () => {
       wrapper.instance().handleClick(8);
 
       expect(wrapper.state('squares')[8]).toBe('O');
+    });
+
+    it('does not update square if a player has won', () => {
+      calculateWinner.mockImplementation(() => 'X');
+      wrapper = shallow(<Board />);
+
+      wrapper.instance().handleClick(8);
+
+      expect(wrapper.state('squares')[8]).toBe(null);
     });
   });
 });
