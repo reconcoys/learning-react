@@ -34,6 +34,7 @@ class Game extends React.Component {
           <button
             type="button"
             className="move"
+            onClick={() => this.jumpTo(move)}
           >
             {desc}
           </button>
@@ -41,6 +42,13 @@ class Game extends React.Component {
       );
     });
     return moves;
+  }
+
+  jumpTo(step) {
+    this.setState({
+      stepNumber: step,
+      xIsNext: (step % 2) === 0,
+    });
   }
 
   handleClick(i) {
@@ -55,7 +63,7 @@ class Game extends React.Component {
           squares: updatedSquares,
         }]),
         xIsNext: !xIsNext,
-        stepNumber: history.length
+        stepNumber: history.length,
       });
     }
   }

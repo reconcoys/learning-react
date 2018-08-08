@@ -62,6 +62,34 @@ describe('Game', () => {
     expect(wrapper.find('.move').last().text()).toBe('Go to move #1');
   });
 
+  describe('when a move link is clicked', () => {
+    beforeEach(() => {
+      const startingState = { squares: [null, null, null, null, null, null, null, null, null] };
+      const firstMove = { squares: [null, null, null, null, null, null, null, null, 'X'] };
+      const secondMove = { squares: [null, null, null, null, null, null, null, 'O', 'X'] };
+      const history = [startingState, firstMove, secondMove];
+      wrapper.setState({ stepNumber: 2, xIsNext: true, history });
+    });
+
+    it('sets the stepNumber to that move number', () => {
+      wrapper.find('.move').at(1).simulate('click');
+
+      expect(wrapper.state('stepNumber')).toBe(1);
+    });
+
+    it('sets xIsNext to true if clicked move number is even', () => {
+      wrapper.find('.move').at(0).simulate('click');
+
+      expect(wrapper.state('xIsNext')).toBe(true);
+    });
+
+    it('sets xIsNext to false if clicked move number is odd', () => {
+      wrapper.find('.move').at(1).simulate('click');
+
+      expect(wrapper.state('xIsNext')).toBe(false);
+    });
+  });
+
   it('passes squares to Board', () => {
     const squares = ['X', null, 'X', null, 'O', null, 'X', null, 'O'];
     wrapper.setState({ history: [{ squares }] });
