@@ -9,16 +9,16 @@ const calculateWinner = (squares) => {
     [0, 4, 8],
     [2, 4, 6],
   ];
-  let winner = null;
+  let winningLine = null;
 
   lines.forEach((line) => {
     const [a, b, c] = line;
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      winner = squares[a];
+      winningLine = line;
     }
   });
 
-  return winner;
+  return winningLine;
 };
 
 export default calculateWinner;

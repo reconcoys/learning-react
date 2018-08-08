@@ -56,8 +56,8 @@ describe('Game', () => {
     expect(wrapper.find('.status').text()).toBe('Next player: O');
   });
 
-  it('shows expected status when calculateWinner returns a player', () => {
-    calculateWinner.mockImplementation(() => 'O');
+  it('shows expected status when calculateWinner returns a line', () => {
+    calculateWinner.mockImplementation(() => [0, 1, 2]);
     wrapper = shallow(<Game />);
 
     expect(wrapper.find('.status').text()).toBe('Winner: O');
@@ -167,7 +167,7 @@ describe('Game', () => {
     });
 
     it('does not update square if a player has won', () => {
-      calculateWinner.mockImplementation(() => 'X');
+      calculateWinner.mockImplementation(() => [0, 1, 2]);
       wrapper = shallow(<Game />);
 
       wrapper.instance().handleClick(8);

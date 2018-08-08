@@ -61,9 +61,9 @@ class Game extends React.Component {
     const newHistory = history.slice(0, stepNumber + 1);
     const currentSquares = newHistory[newHistory.length - 1].squares.slice();
     const currentValues = Game.getSquareValues(currentSquares);
-    const winner = calculateWinner(currentValues);
+    const winningLine = calculateWinner(currentValues);
 
-    if (currentSquares[i].value == null && !winner) {
+    if (currentSquares[i].value == null && !winningLine) {
       const newSquares = _.map(currentSquares, _.clone);
       newSquares[i].value = this.getNextPlayer();
       this.setState({
@@ -77,14 +77,15 @@ class Game extends React.Component {
   }
 
   calculateStatus() {
-    const { history, stepNumber } = this.state;
+    const { history, stepNumber, xIsNext } = this.state;
     const currentSquares = history[stepNumber].squares;
     const currentValues = Game.getSquareValues(currentSquares);
-    const winner = calculateWinner(currentValues);
+    const winningLine = calculateWinner(currentValues);
 
     let status;
 
-    if (winner) {
+    if (winningLine) {
+      const winner = xIsNext ? 'O' : 'X';
       status = `Winner: ${winner}`;
     } else {
       status = `Next player: ${this.getNextPlayer()}`;

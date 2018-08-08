@@ -1,12 +1,12 @@
 import calculateWinner from './GameHelper';
 
 describe('calculateWinner', () => {
-  it('returns expected winner when top horizonital is completed', () => {
+  it('returns expected indexes when top horizonital is completed', () => {
     const squares = ['X', 'X', 'X', null, null, null, null, null, null];
 
     const winner = calculateWinner(squares);
 
-    expect(winner).toBe('X');
+    expect(winner).toEqual([0, 1, 2]);
   });
 
   it('returns expected winner when middle horizonital is completed', () => {
@@ -14,7 +14,7 @@ describe('calculateWinner', () => {
 
     const winner = calculateWinner(squares);
 
-    expect(winner).toBe('X');
+    expect(winner).toEqual([3, 4, 5]);
   });
 
   it('returns expected winner when bottom horizonital is completed', () => {
@@ -22,7 +22,7 @@ describe('calculateWinner', () => {
 
     const winner = calculateWinner(squares);
 
-    expect(winner).toBe('X');
+    expect(winner).toEqual([6, 7, 8]);
   });
 
   it('returns expected winner when left vertical is completed', () => {
@@ -30,7 +30,7 @@ describe('calculateWinner', () => {
 
     const winner = calculateWinner(squares);
 
-    expect(winner).toBe('O');
+    expect(winner).toEqual([0, 3, 6]);
   });
 
   it('returns expected winner when middle vertical is completed', () => {
@@ -38,7 +38,7 @@ describe('calculateWinner', () => {
 
     const winner = calculateWinner(squares);
 
-    expect(winner).toBe('O');
+    expect(winner).toEqual([1, 4, 7]);
   });
 
   it('returns expected winner when right vertical is completed', () => {
@@ -46,7 +46,7 @@ describe('calculateWinner', () => {
 
     const winner = calculateWinner(squares);
 
-    expect(winner).toBe('O');
+    expect(winner).toEqual([2, 5, 8]);
   });
 
   it('returns expected winner when top left to bottom right diagonal is completed', () => {
@@ -54,7 +54,7 @@ describe('calculateWinner', () => {
 
     const winner = calculateWinner(squares);
 
-    expect(winner).toBe('X');
+    expect(winner).toEqual([0, 4, 8]);
   });
 
   it('returns expected winner when bottom left to top right diagonal is completed', () => {
@@ -62,6 +62,6 @@ describe('calculateWinner', () => {
 
     const winner = calculateWinner(squares);
 
-    expect(winner).toBe('O');
+    expect(winner).toEqual([2, 4, 6]);
   });
 });
