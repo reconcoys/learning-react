@@ -1,60 +1,26 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Square from '../Square/Square';
-import calculateWinner from './BoardHelper';
 
 class Board extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      squares: Array(9).fill(null),
-      xIsNext: true,
-    };
-  }
-
-  getNextPlayer() {
-    const { xIsNext } = this.state;
-    return xIsNext ? 'X' : 'O';
-  }
-
-  handleClick(i) {
-    const { squares, xIsNext } = this.state;
-    const winner = calculateWinner(squares);
-    if (squares[i] == null && !winner) {
-      const updatedSquares = squares.slice();
-      updatedSquares[i] = this.getNextPlayer();
-      this.setState({
-        squares: updatedSquares,
-        xIsNext: !xIsNext,
-      });
-    }
+    this.state = {};
   }
 
   renderSquare(i) {
-    const { squares } = this.state;
+    const { squares, onClick } = this.props;
     return (
       <Square
         value={squares[i]}
-        onClick={() => this.handleClick(i)}
+        onClick={() => onClick(i)}
       />
     );
   }
 
   render() {
-    const { squares } = this.state;
-    const winner = calculateWinner(squares);
-    let status;
-
-    if (winner) {
-      status = `Winner: ${winner}`;
-    } else {
-      status = `Next player: ${this.getNextPlayer()}`;
-    }
-
     return (
       <div>
-        <div className="status">
-          {status}
-        </div>
         <div className="board-row">
           {this.renderSquare(0)}
           {this.renderSquare(1)}
@@ -74,5 +40,15 @@ class Board extends React.Component {
     );
   }
 }
+
+Board.propTypes = {
+  squares: PropTypes.arrayOf(PropTypes.string),
+  onClick: PropTypes.func,
+};
+
+Board.defaultProps = {
+  squares: [],
+  onClick: () => {},
+};
 
 export default Board;

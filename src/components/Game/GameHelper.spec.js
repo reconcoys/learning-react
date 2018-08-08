@@ -1,4 +1,4 @@
-import calculateWinner from './BoardHelper';
+import calculateWinner from './GameHelper';
 
 describe('calculateWinner', () => {
   it('returns expected winner when top horizonital is completed', () => {
