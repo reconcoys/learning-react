@@ -27,6 +27,10 @@ describe('Game', () => {
     expect(wrapper.state('xIsNext')).toBe(true);
   });
 
+  it('initializes stepNumber to 0', () => {
+    expect(wrapper.state('stepNumber')).toBe(0);
+  });
+
   it('shows expected status when next player is X', () => {
     expect(wrapper.find('.status').text()).toBe('Next player: X');
   });
@@ -113,6 +117,12 @@ describe('Game', () => {
 
       const currentSquares = wrapper.state('history')[0].squares;
       expect(currentSquares[8]).toBe(null);
+    });
+
+    it('updates the step number', () => {
+      wrapper.instance().handleClick(8);
+
+      expect(wrapper.state('stepNumber')).toBe(1);
     });
   });
 });

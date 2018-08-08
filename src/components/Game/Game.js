@@ -10,6 +10,7 @@ class Game extends React.Component {
         squares: Array(9).fill(null),
       }],
       xIsNext: true,
+      stepNumber: 0,
     };
   }
 
@@ -19,8 +20,8 @@ class Game extends React.Component {
   }
 
   getCurrentSquares() {
-    const { history } = this.state;
-    const currentSquares = history[history.length - 1].squares;
+    const { history, stepNumber } = this.state;
+    const currentSquares = history[stepNumber].squares;
     return currentSquares;
   }
 
@@ -54,6 +55,7 @@ class Game extends React.Component {
           squares: updatedSquares,
         }]),
         xIsNext: !xIsNext,
+        stepNumber: history.length
       });
     }
   }
