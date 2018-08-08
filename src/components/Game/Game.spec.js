@@ -20,7 +20,7 @@ describe('Game', () => {
 
   it('initializes squares to nulls', () => {
     const expectedSquares = [null, null, null, null, null, null, null, null, null];
-    expect(wrapper.state('squares')).toEqual(expectedSquares);
+    expect(wrapper.state('history')[0].squares).toEqual(expectedSquares);
   });
 
   it('initializes next player to X', () => {
@@ -46,7 +46,7 @@ describe('Game', () => {
 
   it('passes squares to Board', () => {
     const squares = ['X', null, 'X', null, 'O', null, 'X', null, 'O'];
-    wrapper.setState({ squares });
+    wrapper.setState({ history: [{ squares }] });
 
     expect(wrapper.find(Board).prop('squares')).toBe(squares);
   });
@@ -56,19 +56,23 @@ describe('Game', () => {
   });
 
   describe('handleClick', () => {
+    it('adds a new entry in history', () => {
+      wrapper.instance().handleClick(8);
+
+      expect(wrapper.state('history')).toHaveLength(2);
+    });
+
     it('sets the given index in state.squares to X if next player is X', () => {
       wrapper.instance().handleClick(8);
 
-      expect(wrapper.state('squares')[8]).toBe('X');
+      expect(wrapper.state('history')[1].squares[8]).toBe('X');
     });
 
     it('sets the given index in state.squares to O if next player is O', () => {
       wrapper.setState({ xIsNext: false });
 
-      expect(wrapper.state('xIsNext')).toBe(false);
       wrapper.instance().handleClick(8);
-
-      expect(wrapper.state('squares')[8]).toBe('O');
+      expect(wrapper.state('history')[1].squares[8]).toBe('O');
     });
 
     it('toggles which player moves next', () => {
@@ -79,11 +83,12 @@ describe('Game', () => {
 
     it('does not update square if square already has a value', () => {
       const squares = [null, null, null, null, null, null, null, null, 'O'];
-      wrapper.setState({ squares });
+      wrapper.setState({ history: [{ squares }] });
 
       wrapper.instance().handleClick(8);
 
-      expect(wrapper.state('squares')[8]).toBe('O');
+      const currentSquares = wrapper.state('history')[0].squares;
+      expect(currentSquares[8]).toBe('O');
     });
 
     it('does not update square if a player has won', () => {
@@ -92,7 +97,8 @@ describe('Game', () => {
 
       wrapper.instance().handleClick(8);
 
-      expect(wrapper.state('squares')[8]).toBe(null);
+      const currentSquares = wrapper.state('history')[0].squares;
+      expect(currentSquares[8]).toBe(null);
     });
   });
 });
