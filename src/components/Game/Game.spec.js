@@ -63,6 +63,24 @@ describe('Game', () => {
     expect(wrapper.find('.status').text()).toBe('Winner: O');
   });
 
+  it('shows expected status when all squares have been selected without a winner', () => {
+    const squares = [
+      { value: 'X', color: 'white' },
+      { value: 'O', color: 'white' },
+      { value: 'X', color: 'white' },
+      { value: 'X', color: 'white' },
+      { value: 'O', color: 'white' },
+      { value: 'O', color: 'white' },
+      { value: 'O', color: 'white' },
+      { value: 'X', color: 'white' },
+      { value: 'X', color: 'white' },
+    ];
+
+    wrapper.setState({ history: [{ squares }] });
+
+    expect(wrapper.find('.status').text()).toBe('Tied game');
+  });
+
   it('calls calculateWinner with currentSquare values', () => {
     const squares = createEmptySquares();
     squares[8].value = 'O';

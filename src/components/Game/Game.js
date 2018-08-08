@@ -94,9 +94,12 @@ class Game extends React.Component {
     if (winningLine) {
       const winner = xIsNext ? 'O' : 'X';
       status = `Winner: ${winner}`;
-    } else {
+    } else if (_.includes(currentValues, null)) {
       status = `Next player: ${this.getNextPlayer()}`;
+    } else {
+      status = 'Tied game';
     }
+
     return status;
   }
 
