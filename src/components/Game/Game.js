@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import Board from '../Board/Board';
 import calculateWinner from './GameHelper';
 
@@ -7,11 +8,15 @@ class Game extends React.Component {
     super(props);
     this.state = {
       history: [{
-        squares: Array(9).fill(null),
+        squares: Array.apply(null, Array(9)).map(() => ({ value: null, color: 'white' })),
       }],
       xIsNext: true,
       stepNumber: 0,
     };
+  }
+
+  static getSquareValues(squares) {
+    return squares.map(square => square.value);
   }
 
   getNextPlayer() {
@@ -55,11 +60,12 @@ class Game extends React.Component {
     const { history, xIsNext, stepNumber } = this.state;
     const newHistory = history.slice(0, stepNumber + 1);
     const currentSquares = newHistory[newHistory.length - 1].squares.slice();
-    const winner = calculateWinner(currentSquares);
+    const currentValues = Game.getSquareValues(currentSquares);
+    const winner = calculateWinner(currentValues);
 
-    if (currentSquares[i] == null && !winner) {
-      const newSquares = currentSquares.slice();
-      newSquares[i] = this.getNextPlayer();
+    if (currentSquares[i].value == null && !winner) {
+      const newSquares = _.map(currentSquares, _.clone);
+      newSquares[i].value = this.getNextPlayer();
       this.setState({
         history: newHistory.concat([{
           squares: newSquares,
@@ -73,7 +79,8 @@ class Game extends React.Component {
   calculateStatus() {
     const { history, stepNumber } = this.state;
     const currentSquares = history[stepNumber].squares;
-    const winner = calculateWinner(currentSquares);
+    const currentValues = Game.getSquareValues(currentSquares);
+    const winner = calculateWinner(currentValues);
 
     let status;
 

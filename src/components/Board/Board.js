@@ -12,8 +12,8 @@ class Board extends React.Component {
     const { squares, onClick } = this.props;
     return (
       <Square
-        value={squares[i]}
-        color="white"
+        value={squares[i].value}
+        color={squares[i].color}
         onClick={() => onClick(i)}
       />
     );
@@ -43,12 +43,14 @@ class Board extends React.Component {
 }
 
 Board.propTypes = {
-  squares: PropTypes.arrayOf(PropTypes.string),
+  squares: PropTypes.arrayOf(PropTypes.shape({
+    value: PropTypes.string,
+  })),
   onClick: PropTypes.func,
 };
 
 Board.defaultProps = {
-  squares: [],
+  squares: Array.apply(null, Array(9)).map(() => ({})),
   onClick: () => {},
 };
 

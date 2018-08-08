@@ -6,6 +6,21 @@ import Board from '../Board/Board';
 
 jest.mock('./GameHelper');
 
+const createEmptySquares = () => {
+  const squares = [
+    { value: null, color: 'white' },
+    { value: null, color: 'white' },
+    { value: null, color: 'white' },
+    { value: null, color: 'white' },
+    { value: null, color: 'white' },
+    { value: null, color: 'white' },
+    { value: null, color: 'white' },
+    { value: null, color: 'white' },
+    { value: null, color: 'white' },
+  ];
+  return squares;
+};
+
 describe('Game', () => {
   let wrapper;
 
@@ -15,11 +30,11 @@ describe('Game', () => {
   });
 
   afterEach(() => {
-    calculateWinner.mockRestore();
+    calculateWinner.mockReset();
   });
 
   it('initializes squares to nulls', () => {
-    const expectedSquares = [null, null, null, null, null, null, null, null, null];
+    const expectedSquares = createEmptySquares();
     expect(wrapper.state('history')[0].squares).toEqual(expectedSquares);
   });
 
@@ -48,13 +63,22 @@ describe('Game', () => {
     expect(wrapper.find('.status').text()).toBe('Winner: O');
   });
 
+  it('calls calculateWinner with currentSquare values', () => {
+    const squares = createEmptySquares();
+    squares[8].value = 'O';
+    wrapper.setState({ history: [{ squares }] });
+
+    expect(calculateWinner).toBeCalledWith([null, null, null, null, null, null, null, null, 'O']);
+  });
+
   it('shows link to go to game start when there is no history', () => {
     expect(wrapper.find('.move').text()).toBe('Go to game start');
   });
 
   it('shows link to go to move number when there is history', () => {
-    const startingState = { squares: [null, null, null, null, null, null, null, null, null] };
-    const firstMove = { squares: [null, null, null, null, null, null, null, null, 'X'] };
+    const startingState = { squares: createEmptySquares() };
+    const firstMove = { squares: createEmptySquares() };
+    firstMove.squares[8].value = 'X';
     const history = [startingState, firstMove];
     wrapper.setState({ history });
     wrapper.update();
@@ -64,9 +88,12 @@ describe('Game', () => {
 
   describe('when a move link is clicked', () => {
     beforeEach(() => {
-      const startingState = { squares: [null, null, null, null, null, null, null, null, null] };
-      const firstMove = { squares: [null, null, null, null, null, null, null, null, 'X'] };
-      const secondMove = { squares: [null, null, null, null, null, null, null, 'O', 'X'] };
+      const startingState = { squares: createEmptySquares() };
+      const firstMove = { squares: createEmptySquares() };
+      firstMove.squares[8].value = 'X';
+      const secondMove = { squares: createEmptySquares() };
+      secondMove.squares[8].value = 'X';
+      secondMove.squares[7].value = 'O';
       const history = [startingState, firstMove, secondMove];
       wrapper.setState({ stepNumber: 2, xIsNext: true, history });
     });
@@ -91,7 +118,8 @@ describe('Game', () => {
   });
 
   it('passes squares to Board', () => {
-    const squares = ['X', null, 'X', null, 'O', null, 'X', null, 'O'];
+    const squares = createEmptySquares();
+    squares[5].value = 'X';
     wrapper.setState({ history: [{ squares }] });
 
     expect(wrapper.find(Board).prop('squares')).toBe(squares);
@@ -108,17 +136,17 @@ describe('Game', () => {
       expect(wrapper.state('history')).toHaveLength(2);
     });
 
-    it('sets the given index in state.squares to X if next player is X', () => {
+    it('sets the given index value in state.squares to X if next player is X', () => {
       wrapper.instance().handleClick(8);
 
-      expect(wrapper.state('history')[1].squares[8]).toBe('X');
+      expect(wrapper.state('history')[1].squares[8].value).toBe('X');
     });
 
-    it('sets the given index in state.squares to O if next player is O', () => {
+    it('sets the given index value in state.squares to O if next player is O', () => {
       wrapper.setState({ xIsNext: false });
 
       wrapper.instance().handleClick(8);
-      expect(wrapper.state('history')[1].squares[8]).toBe('O');
+      expect(wrapper.state('history')[1].squares[8].value).toBe('O');
     });
 
     it('toggles which player moves next', () => {
@@ -128,13 +156,14 @@ describe('Game', () => {
     });
 
     it('does not update square if square already has a value', () => {
-      const squares = [null, null, null, null, null, null, null, null, 'O'];
+      const squares = createEmptySquares();
+      squares[8].value = 'O';
       wrapper.setState({ history: [{ squares }] });
 
       wrapper.instance().handleClick(8);
 
       const currentSquares = wrapper.state('history')[0].squares;
-      expect(currentSquares[8]).toBe('O');
+      expect(currentSquares[8].value).toBe('O');
     });
 
     it('does not update square if a player has won', () => {
@@ -144,7 +173,17 @@ describe('Game', () => {
       wrapper.instance().handleClick(8);
 
       const currentSquares = wrapper.state('history')[0].squares;
-      expect(currentSquares[8]).toBe(null);
+      expect(currentSquares[8].value).toBe(null);
+    });
+
+    it('calls calculateWinner with currentSquare values', () => {
+      const squares = createEmptySquares();
+      squares[8].value = 'O';
+      wrapper.setState({ history: [{ squares }] });
+
+      wrapper.instance().handleClick(8);
+
+      expect(calculateWinner).toBeCalledWith([null, null, null, null, null, null, null, null, 'O']);
     });
 
     it('updates the step number', () => {
@@ -154,9 +193,12 @@ describe('Game', () => {
     });
 
     it('should remove future moves if a past move is replayed', () => {
-      const startingState = { squares: [null, null, null, null, null, null, null, null, null] };
-      const firstMove = { squares: [null, null, null, null, null, null, null, null, 'X'] };
-      const secondMove = { squares: [null, null, null, null, null, null, null, 'O', 'X'] };
+      const startingState = { squares: createEmptySquares() };
+      const firstMove = { squares: createEmptySquares() };
+      firstMove.squares[8].value = 'X';
+      const secondMove = { squares: createEmptySquares() };
+      secondMove.squares[8].value = 'X';
+      secondMove.squares[7].value = 'O';
       const history = [startingState, firstMove, secondMove];
       wrapper.setState({ stepNumber: 0, xIsNext: true, history });
 
