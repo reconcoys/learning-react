@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Square from './Square';
+import Square, { SquareButton } from './Square';
 
 describe('Square', () => {
   let wrapper;
@@ -16,17 +16,17 @@ describe('Square', () => {
     it('calls props.onClick', () => {
       const { onClick } = props;
 
-      wrapper.find('.square').simulate('click');
+      wrapper.find(SquareButton).simulate('click');
 
       expect(onClick).toBeCalled();
     });
   });
 
   it('shows value on button', () => {
-    expect(wrapper.find('.square').text()).toBe('X');
+    expect(wrapper.find(SquareButton).children().text()).toBe('X');
   });
 
   it('sets background color to color prop', () => {
-    expect(wrapper.find('.square').props().style).toEqual({ background: 'white' });
+    expect(wrapper.find(SquareButton).props().style).toEqual({ background: 'white' });
   });
 });
