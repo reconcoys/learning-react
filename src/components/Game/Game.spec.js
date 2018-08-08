@@ -176,6 +176,21 @@ describe('Game', () => {
       expect(currentSquares[8].value).toBe(null);
     });
 
+    it('sets the winning line to green if move won', () => {
+      calculateWinner
+        .mockImplementationOnce(() => null)
+        .mockImplementationOnce(() => null)
+        .mockImplementationOnce(() => [0, 1, 2]);
+      wrapper = shallow(<Game />);
+
+      wrapper.instance().handleClick(8);
+
+      const currentSquares = wrapper.state('history')[1].squares;
+      expect(currentSquares[0].color).toBe('green');
+      expect(currentSquares[1].color).toBe('green');
+      expect(currentSquares[2].color).toBe('green');
+    });
+
     it('calls calculateWinner with currentSquare values', () => {
       const squares = createEmptySquares();
       squares[8].value = 'O';

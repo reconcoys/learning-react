@@ -61,11 +61,18 @@ class Game extends React.Component {
     const newHistory = history.slice(0, stepNumber + 1);
     const currentSquares = newHistory[newHistory.length - 1].squares.slice();
     const currentValues = Game.getSquareValues(currentSquares);
-    const winningLine = calculateWinner(currentValues);
+    const winnerFound = calculateWinner(currentValues);
 
-    if (currentSquares[i].value == null && !winningLine) {
+    if (currentSquares[i].value == null && !winnerFound) {
       const newSquares = _.map(currentSquares, _.clone);
       newSquares[i].value = this.getNextPlayer();
+
+      const newValues = Game.getSquareValues(newSquares);
+      const winningLine = calculateWinner(newValues);
+      if (winningLine) {
+        _.each(winningLine, (winningIndex) => { newSquares[winningIndex].color = 'green'; });
+      }
+
       this.setState({
         history: newHistory.concat([{
           squares: newSquares,
