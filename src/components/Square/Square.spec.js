@@ -25,4 +25,8 @@ describe('Square', () => {
   it('shows value on button', () => {
     expect(wrapper.find('.square').text()).toBe('X');
   });
+
+  it('sets background color to color prop', () => {
+    expect(wrapper.find('.square').props().style).toEqual({ background: 'white' });
+  });
 });
