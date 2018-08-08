@@ -13,6 +13,7 @@ class Board extends React.Component {
     return (
       <Square
         value={squares[i]}
+        color="white"
         onClick={() => onClick(i)}
       />
     );

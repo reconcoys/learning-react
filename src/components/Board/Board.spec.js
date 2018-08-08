@@ -21,4 +21,8 @@ describe('Board', () => {
   it('passes onClick to Squares', () => {
     expect(wrapper.find(Square).first().prop('onClick')).not.toBeUndefined();
   });
+
+  it('passes color to Squares', () => {
+    expect(wrapper.find(Square).first().prop('color')).toBe('white');
+  });
 });
