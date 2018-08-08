@@ -52,24 +52,27 @@ class Game extends React.Component {
   }
 
   handleClick(i) {
-    const { history, xIsNext } = this.state;
-    const currentSquares = this.getCurrentSquares();
+    const { history, xIsNext, stepNumber } = this.state;
+    const newHistory = history.slice(0, stepNumber + 1);
+    const currentSquares = newHistory[newHistory.length - 1].squares.slice();
     const winner = calculateWinner(currentSquares);
+
     if (currentSquares[i] == null && !winner) {
-      const updatedSquares = currentSquares.slice();
-      updatedSquares[i] = this.getNextPlayer();
+      const newSquares = currentSquares.slice();
+      newSquares[i] = this.getNextPlayer();
       this.setState({
-        history: history.concat([{
-          squares: updatedSquares,
+        history: newHistory.concat([{
+          squares: newSquares,
         }]),
         xIsNext: !xIsNext,
-        stepNumber: history.length,
+        stepNumber: newHistory.length,
       });
     }
   }
 
   calculateStatus() {
-    const currentSquares = this.getCurrentSquares();
+    const { history, stepNumber } = this.state;
+    const currentSquares = history[stepNumber].squares;
     const winner = calculateWinner(currentSquares);
 
     let status;
@@ -83,7 +86,8 @@ class Game extends React.Component {
   }
 
   render() {
-    const currentSquares = this.getCurrentSquares();
+    const { history, stepNumber } = this.state;
+    const currentSquares = history[stepNumber].squares;
     const status = this.calculateStatus();
     const moves = this.getMoves();
 

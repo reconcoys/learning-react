@@ -152,5 +152,17 @@ describe('Game', () => {
 
       expect(wrapper.state('stepNumber')).toBe(1);
     });
+
+    it('should remove future moves if a past move is replayed', () => {
+      const startingState = { squares: [null, null, null, null, null, null, null, null, null] };
+      const firstMove = { squares: [null, null, null, null, null, null, null, null, 'X'] };
+      const secondMove = { squares: [null, null, null, null, null, null, null, 'O', 'X'] };
+      const history = [startingState, firstMove, secondMove];
+      wrapper.setState({ stepNumber: 0, xIsNext: true, history });
+
+      wrapper.instance().handleClick(2);
+
+      expect(wrapper.state('history')).toHaveLength(2);
+    });
   });
 });
