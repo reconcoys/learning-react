@@ -24,6 +24,24 @@ class Game extends React.Component {
     return currentSquares;
   }
 
+  getMoves() {
+    const { history } = this.state;
+    const moves = history.map((step, move) => {
+      const desc = move ? `Go to move #${move}` : 'Go to game start';
+      return (
+        <li key={move}>
+          <button
+            type="button"
+            className="move"
+          >
+            {desc}
+          </button>
+        </li>
+      );
+    });
+    return moves;
+  }
+
   handleClick(i) {
     const { history, xIsNext } = this.state;
     const currentSquares = this.getCurrentSquares();
@@ -57,6 +75,7 @@ class Game extends React.Component {
   render() {
     const currentSquares = this.getCurrentSquares();
     const status = this.calculateStatus();
+    const moves = this.getMoves();
 
     return (
       <div className="game">
@@ -71,7 +90,7 @@ class Game extends React.Component {
             {status}
           </div>
           <ol>
-            {/* TODO */}
+            {moves}
           </ol>
         </div>
       </div>

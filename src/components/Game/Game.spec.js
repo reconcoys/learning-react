@@ -44,6 +44,20 @@ describe('Game', () => {
     expect(wrapper.find('.status').text()).toBe('Winner: O');
   });
 
+  it('shows link to go to game start when there is no history', () => {
+    expect(wrapper.find('.move').text()).toBe('Go to game start');
+  });
+
+  it('shows link to go to move number when there is history', () => {
+    const startingState = { squares: [null, null, null, null, null, null, null, null, null] };
+    const firstMove = { squares: [null, null, null, null, null, null, null, null, 'X'] };
+    const history = [startingState, firstMove];
+    wrapper.setState({ history });
+    wrapper.update();
+
+    expect(wrapper.find('.move').last().text()).toBe('Go to move #1');
+  });
+
   it('passes squares to Board', () => {
     const squares = ['X', null, 'X', null, 'O', null, 'X', null, 'O'];
     wrapper.setState({ history: [{ squares }] });
