@@ -15,3 +15,7 @@ yarn test
 ```bash
 yarn start
 ```
+
+# Todo
+* Add ability to save games in a database in order to use Redux/MobX
+* Move all styling to Styled Components
